@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ topic.title }}</h2>
+<p>{{ topic.content }}</p>
+
+<h3>Comments</h3>
+<ul class="list-group mb-4">
+    {% for comment in comments %}
+        <li class="list-group-item">{{ comment.content }}</li>
+    {% endfor %}
+</ul>
+
+<h4>Add a Comment</h4>
+<form method="post" action="{{ url_for('comment', topic_id=topic.id) }}">
+    <div class="mb-3">
+        <label for="content" class="form-label">Comment</label>
+        <textarea class="form-control" name="content" id="content" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Post Comment</button>
+</form>
+{% endblock %}

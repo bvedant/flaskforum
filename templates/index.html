@@ -6,7 +6,11 @@
 <h2 class="my-4">Topics</h2>
 <ul class="list-group">
     {% for topic in topics %}
-        <li class="list-group-item"><a href="{{ url_for('topic', topic_id=topic.id) }}">{{ topic.title }}</a></li>
+    <li class="list-group-item">
+        <a href="{{ url_for('topic', topic_id=topic.id) }}">{{ topic.title }}</a>
+        <br>
+        <small class="text-muted">Posted on {{ topic.created_at }}</small>
+    </li>
     {% endfor %}
 </ul>
 {% else %}

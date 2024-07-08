@@ -1,8 +1,9 @@
 from flask import Flask, request, g, redirect, url_for, render_template, flash
 import sqlite3
+from datetime import datetime
 
 app = Flask(__name__)
-app.config['DATABASE'] = 'forum.db'
+app.config['DATABASE'] = 'app/forum.db'
 app.config['SECRET_KEY'] = 'your_secret_key'
 
 def connect_db():
@@ -33,16 +34,16 @@ def init_db():
 @app.route('/')
 def index():
     db = get_db()
-    cur = db.execute('SELECT id, title FROM topics ORDER BY id DESC')
+    cur = db.execute('SELECT id, title, created_at FROM topics ORDER BY id DESC')
     topics = cur.fetchall()
     return render_template('index.html', topics=topics)
 
 @app.route('/topic/<int:topic_id>')
 def topic(topic_id):
     db = get_db()
-    cur = db.execute('SELECT id, title, content FROM topics WHERE id = ?', (topic_id,))
+    cur = db.execute('SELECT id, title, content, created_at FROM topics WHERE id = ?', (topic_id,))
     topic = cur.fetchone()
-    cur = db.execute('SELECT content FROM comments WHERE topic_id = ?', (topic_id,))
+    cur = db.execute('SELECT content, created_at FROM comments WHERE topic_id = ?', (topic_id,))
     comments = cur.fetchall()
     return render_template('topic.html', topic=topic, comments=comments)
 
